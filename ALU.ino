@@ -1,5 +1,7 @@
 /* 74181 
  * @author Lucas de Souza Moraes 
+ * BITWISE OPERATIONS 
+ * SUJESTAO DE ALTERACAO (FAZER AS OPERACOES COMO String E NAO BIT A BIT)
  */
 
 //F MUX:
@@ -16,8 +18,8 @@ int d3,
     d1,
     d0;
 int A, //A VALUE
-	B, //B VALUE
-	S; //MUX INSTRUCTION
+    B, //B VALUE
+    S; //MUX INSTRUCTION
 
 void setup() {
 	//SETUP:
@@ -34,6 +36,10 @@ char readChar(){
 //CHAR TO INTEGER
 void toInt(char value){
 	return atoi(value);	
+}
+//BINARY CONVERSION
+int toBin(){
+	
 }
 //DISMEMBER VALUE
 void dismember(int value){
@@ -54,12 +60,12 @@ void display(int value){
 /*FUNCTION TABLE L = LOW H = HIGH
 LLLL = A'		HLLL = or(A',B)
 LLLH = nor(A,B)		HLLH = xnor(A,B)
-LLHL = and(A,B)		HLHL = B
+LLHL = and(A',B)	HLHL = B
 LLHH = Logical(0)	HLHH = and(A,B)
 LHLL = and(A',B')	HHLL = Logical(1)
 LHLH = B'		HHLH = or(A,B')
 LHHL = xor(A,B)		HHHL = or(A,B)
-LHHH = and(A,B)		HHHH = A
+LHHH = and(A,B')	HHHH = A
 */
 int mux(){
 	int ans;
@@ -114,8 +120,18 @@ int mux(){
 			break;
 	}
 	return ans;
-}//END MUX
-//LOGICAL
+}
+//END MUX
+/*LOGICAL CHART & MNEMONIC
+A' = An			or(A',B) = AnoB
+nor(A,B) = nAoB		xnor(A,B)' = nAxB
+and(A',B) = AnB		B = B
+Logical(0) = zeroL	and(A,B) = AB
+and(A',B') = nAeB	Logical(1) = umL
+B' = Bn			or(A,B') = AoBn
+xor(A,B) = AxB		or(A,B) = AoB
+and(A,B') = ABn		A = A
+*/
 int not(int value){ //OK
 	return ~(value);
 }
