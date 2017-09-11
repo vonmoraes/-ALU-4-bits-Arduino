@@ -76,52 +76,52 @@ LHHH = and(A,B')	HHHH = A
 int mux(){
 	int ans;
 	switch(S){
-		case 0000: //OK
+		case '0': //OK
 			ans=not(A);
 			break;
-		case 0001: //OK
+		case '1': //OK
 			ans=nor(A,B);
 			break;
-		case 0010: //OK
+		case '2': //OK
 			ans=and(A,B);
 			break;
-		case 0011: //OK
+		case '3': //OK
 			ans=logical_0;
 			break;
-		case 0100: //OK
+		case '4': //OK
 			ans=and(not(A),not(B));
 			break;
-		case 0101: //OK
+		case '5': //OK
 			ans=not(B);
 			break;
-		case 0110: //OK
+		case '6': //OK
 			ans=xor(A,B);
 			break;
-		case 0111: //OK
+		case '7': //OK
 			ans=and(A,B);
 			break;
-		case 1000: //OK
+		case '8': //OK
 			ans=or(not(A),B);
 			break;
-		case 1001: //OK
+		case '9': //OK
 			ans=xnor(A,B);
 			break;
-		case 1010: //OK
+		case 'A': //OK
 			ans=B;
 			break;
-		case 1011: //OK
+		case 'B': //OK
 			ans=and(A,B);
 			break;
-		case 1100: //OK
+		case 'C': //OK
 			ans=logical_1;
 			break;
-		case 1101: //OK
+		case 'D': //OK
 			ans=or(A,not(B));
 			break;
-		case 1110: //OK
+		case 'E': //OK
 			ans=or(A,B);
 			break;
-		case 0000: //OK
+		case 'F': //OK
 			ans=A;
 			break;
 	}
