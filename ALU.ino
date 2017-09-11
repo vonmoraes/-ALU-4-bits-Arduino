@@ -18,9 +18,8 @@ int d3,
     d1,
     d0;
 int A, //A VALUE
-    B, //B VALUE
-    S; //MUX INSTRUCTION
-
+    B; //B VALUE
+char S; //MUX INSTRUCTION
 void setup() {
 	//SETUP:
 	pinMode(ledF3,OUTPUT);
@@ -37,9 +36,16 @@ char readChar(){
 void toInt(char value){
 	return atoi(value);	
 }
-//BINARY CONVERSION
-int toBin(){
-	
+//CONVERSION HEX TO DEC
+int hexToDec(char value){
+	int ans;
+	if(isHexadecimalDigit(value)){//IF A B C D E F 
+		ans = (int)value - 55;
+	}
+	else{
+		ans = (int)value - 48;
+	}
+	return temp;
 }
 //DISMEMBER VALUE
 void dismember(int value){
