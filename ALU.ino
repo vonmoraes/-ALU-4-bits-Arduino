@@ -37,40 +37,27 @@ void toInt(char value){
 }
 //DISMEMBER VALUE
 void dismember(int value){
-	int temp = value;
-	d3 = value%10;
-	temp/=10;
-	d2 = value%10;
-	temp/=10;
-	d1 = value%10;
-	temp/=10;
-	d0 = value%10;
+  int temp = value;
+  d3 = temp/1000;
+  d2 = (temp/100)%10;
+  d1 = ((temp/10)%100)%10;
+  d0 = (((temp%1000)%100)%10);
 }
 //DISPLAY LEDS
-void display(){
-	digitalWrite(ledF3, d3);
-	digitalWrite(ledF2, d2);
-	digitalWrite(ledF1, d1);
-	digitalWrite(ledF0, d0);
-}
 void display(int value){
-	int temp = value;
-	digitalWrite(ledF3, temp%10);
-	temp/=10;
-	digitalWrite(ledF2, temp%10);
-	temp/=10;
-	digitalWrite(ledF1, temp%10);
-	temp/=10;
-	digitalWrite(ledF0, temp%10);
+  int temp = value;
+  digitalWrite(ledF3, temp/1000);
+  digitalWrite(ledF2, (temp/100)%10);
+  digitalWrite(ledF1, ((temp/10)%100)%10);
+  digitalWrite(ledF0,(((temp%1000)%100)%10));
 }
-
 /*FUNCTION TABLE L = LOW H = HIGH
-LLLL = A'			HLLL = or(A',B)
+LLLL = A'		HLLL = or(A',B)
 LLLH = nor(A,B)		HLLH = xnor(A,B)
 LLHL = and(A,B)		HLHL = B
 LLHH = Logical(0)	HLHH = and(A,B)
 LHLL = and(A',B')	HHLL = Logical(1)
-LHLH = B'			HHLH = or(A,B')
+LHLH = B'		HHLH = or(A,B')
 LHHL = xor(A,B)		HHHL = or(A,B)
 LHHH = and(A,B)		HHHH = A
 */
@@ -128,7 +115,6 @@ int mux(){
 	}
 	return ans;
 }//END MUX
-
 //LOGICAL
 int not(int value){ //OK
 	return ~(value);
