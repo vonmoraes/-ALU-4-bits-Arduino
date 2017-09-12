@@ -1,6 +1,7 @@
-/* 74181
- * @author Lucas de Souza Moraes
+/* 74181 
+ * @author Lucas de Souza Moraes 
  * BITWISE OPERATIONS 
+ * SUJESTAO DE ALTERACAO (FAZER AS OPERACOES COMO String E NAO BIT A BIT)
  */
 
 //F MUX:
@@ -12,7 +13,7 @@ const int ledF0 = 10;
 const String logical_0 = "0000";
 const String logical_1 = "1111";
 //DISMEMBERED DIGITS: //DEPRECATED
-int d3,
+int d3, 
     d2,
     d1,
     d0;
@@ -32,11 +33,11 @@ void setup() {
 }
 //
 char readChar(){
-	return Serial.read();
+	return Serial.read();	
 }
 //CHAR TO INTEGER
-void toInt(char value){ //DEPRECATED
-	return atoi(value);
+void toInt(char value){ //DEPRECATED 
+	return atoi(value);	
 }
 //HEX TO DEC
 int hexToDec(char value){
@@ -54,7 +55,7 @@ void decToBin(int value){
 	bin = String(value,BIN);
 }
 //DISMEMBER VALUE
-void dismember(int value){ //DEPRECATED
+void dismember(int value){ //DEPRECATED 
 	int temp = value;
 	d3 = temp/1000;
 	d2 = (temp/100)%10;
@@ -62,7 +63,7 @@ void dismember(int value){ //DEPRECATED
 	d0 = (((temp%1000)%100)%10);
 }
 //DISPLAY LEDS
-void display(int value){ //DEPRECATED
+void display(int value){ //DEPRECATED 
 	int temp = value;
 	digitalWrite(ledF3, temp/1000);
 	digitalWrite(ledF2, (temp/100)%10);
