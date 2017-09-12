@@ -10,16 +10,19 @@ const int ledF2 = 12;
 const int ledF1 = 11;
 const int ledF0 = 10;
 //LOGICAL CONSTANTS:
-const int logical_0 = 0000;
-const int logical_1 = 1111;
-//DISMEMBERED DIGITS:
+const String logical_0 = "0000";
+const String logical_1 = "1111";
+//DISMEMBERED DIGITS: //DEPRECATED
 int d3, 
     d2,
     d1,
     d0;
 int A, //A VALUE
-    B; //B VALUE
+    B, //B VALUE
+    F; //F VALUE
 char S; //MUX INSTRUCTION
+String bin, //BIN VALUE
+	in; //IN SERIAL VALUE
 void setup() {
 	//SETUP:
 	pinMode(ledF3,OUTPUT);
@@ -33,35 +36,46 @@ char readChar(){
 	return Serial.read();	
 }
 //CHAR TO INTEGER
-void toInt(char value){
+void toInt(char value){ //DEPRECATED 
 	return atoi(value);	
 }
-//CONVERSION HEX TO DEC
+//HEX TO DEC
 int hexToDec(char value){
 	int ans;
-	if(isHexadecimalDigit(value)){//IF A B C D E F 
+	if(isHexadecimalDigit(value)){
 		ans = (int)value - 55;
 	}
 	else{
 		ans = (int)value - 48;
 	}
-	return temp;
+	return ans;
+}
+//DEC TO BIN
+void decToBin(int value){
+	bin = String(value,BIN);
 }
 //DISMEMBER VALUE
-void dismember(int value){
-  int temp = value;
-  d3 = temp/1000;
-  d2 = (temp/100)%10;
-  d1 = ((temp/10)%100)%10;
-  d0 = (((temp%1000)%100)%10);
+void dismember(int value){ //DEPRECATED 
+	int temp = value;
+	d3 = temp/1000;
+	d2 = (temp/100)%10;
+	d1 = ((temp/10)%100)%10;
+	d0 = (((temp%1000)%100)%10);
 }
 //DISPLAY LEDS
-void display(int value){
-  int temp = value;
-  digitalWrite(ledF3, temp/1000);
-  digitalWrite(ledF2, (temp/100)%10);
-  digitalWrite(ledF1, ((temp/10)%100)%10);
-  digitalWrite(ledF0,(((temp%1000)%100)%10));
+void display(int value){ //DEPRECATED 
+	int temp = value;
+	digitalWrite(ledF3, temp/1000);
+	digitalWrite(ledF2, (temp/100)%10);
+	digitalWrite(ledF1, ((temp/10)%100)%10);
+	digitalWrite(ledF0,(((temp%1000)%100)%10));
+}
+void display(String value){
+	int temp = value;
+	digitalWrite(ledF3, value.charAt(0));
+	digitalWrite(ledF2, value.charAt(1));
+	digitalWrite(ledF1, value.charAt(2));
+	digitalWrite(ledF0, value.charAt(3));
 }
 /*FUNCTION TABLE L = LOW H = HIGH
 LLLL = A'		HLLL = or(A',B)
@@ -139,7 +153,7 @@ xor(A,B) = AxB		or(A,B) = AoB
 and(A,B') = ABn		A = A
 */
 int not(int value){ //OK
-	return ~(value);
+	return (~value);
 }
 int nor(int value1,int value2){ //OK
 	return not(value1 | value2);
@@ -160,22 +174,25 @@ int xnor(int value1,int value2){ //OK
 	return not(value1 ^ value2);
 }
 //END LOGICAL
-
-//
 void loop() {
 	//CODE:
 	/*
-	A = readChar();
-	B = readChar();
-	S = readChar();
-	display(dismember(mux()))
+	while(Serial.avaliable() > 0){
+		in = Serial.readString();
+		A = in.charAt(0);
+		B = in.charAt(1);
+		S = in.charAt(2);
+		F = mux();
+		display(decToBin(F));
+		Serial.flush();
+		delay(1000);
+	}
 	*/
-	
 	//TEST
-	desmebrar(1010);
-	display();
-	delay(1000);
-	display(0101);
+	A = 10;
+	B = 11;
+	int test = not(A);
+	Serial.println(test);
 	//ETEST
 	Serial.flush();
 }
