@@ -1,0 +1,49 @@
+/*DEPRECATED METHODS INO*/
+//CHAR TO INTEGER
+void toInt(char value){ //DEPRECATED
+	return atoi(value);
+}
+void display(int value){ //DEPRECATED
+	int temp = value;
+	digitalWrite(ledF3, temp/1000);
+	digitalWrite(ledF2, (temp/100)%10);
+	digitalWrite(ledF1, ((temp/10)%100)%10);
+	digitalWrite(ledF0,(((temp%1000)%100)%10));
+}
+//DISMEMBER VALUE
+void dismember(int value){ //DEPRECATED
+	int temp = value;
+	d3 = temp/1000;
+	d2 = (temp/100)%10;
+	d1 = ((temp/10)%100)%10;
+	d0 = (((temp%1000)%100)%10);
+}
+//DEC TO BIN
+String decToBin(int value){
+	String temp = String(value,BIN);
+  String ans = "";
+  for(int i = temp.length(); i >= 0; i--){
+    ans = ans + temp.charAt(i);
+  }
+  return ans;
+}
+//DISPLAY LEDS
+void display(String value){
+	digitalWrite(ledF3, hexToDec(value.charAt(0)));
+	digitalWrite(ledF2, hexToDec(value.charAt(1)));
+	digitalWrite(ledF1, hexToDec(value.charAt(2)));
+	digitalWrite(ledF0, hexToDec(value.charAt(3)));
+}
+void display(int value){
+  int temp = value;
+  digitalWrite(ledF3, temp/1000);
+  digitalWrite(ledF2, (temp/100)%10);
+  digitalWrite(ledF1, ((temp/10)%100)%10);
+  digitalWrite(ledF0,(((temp%1000)%100)%10));
+}
+void display(){
+  digitalWrite(ledF3, HIGH);
+  digitalWrite(ledF2, HIGH);
+  digitalWrite(ledF1, HIGH);
+  digitalWrite(ledF0, HIGH);
+}

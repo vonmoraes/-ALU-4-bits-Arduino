@@ -1,30 +1,32 @@
-/* 74181
- * @version 0.0.3
+/** ALU 4_bits 74181,
+ * Aritmetic Logic Unit with SN54/74LS181 datasheet bitwise operations
  * @author Lucas de Souza Moraes
- * BITWISE OPERATIONS
- * https://www.embarcados.com.br/portas-logicas/
- * https://www.embarcados.com.br/bits-em-linguagem-c/
+ * @author Vinícius de Almeida Rocha
+ * @author André Albino Bastos
+ * @version 0.0.4
+ # REFERENCES
+ * @link
+ * @link https://www.embarcados.com.br/portas-logicas/
+ * @link https://www.embarcados.com.br/bits-em-linguagem-c/
+  ## NOTE:
+  # display(int value); also converts dec to bin. OK
+  # MUX(); OK
+  # LOGICGATES; OK
+  ##
  */
-
 //F MUX:
 const int ledF3 = 13;
 const int ledF2 = 12;
 const int ledF1 = 11;
 const int ledF0 = 10;
 //LOGICAL CONSTANTS:
-const int logical_0 = "0000";
-const int logical_1 = "1111";
-//DISMEMBERED DIGITS: //DEPRECATED
-int d3,
-    d2,
-    d1,
-    d0;
+const int logical_0 = 0000;
+const int logical_1 = 1111;
 int A, //A VALUE
     B, //B VALUE
     F; //F VALUE
 char S; //MUX INSTRUCTION
-String bin = "0000", //BIN VALUE
-	in; //IN SERIAL VALUE
+String in; //IN SERIAL VALUE
 void setup() {
 	//SETUP:
 	pinMode(ledF3,OUTPUT);
@@ -33,18 +35,10 @@ void setup() {
 	pinMode(ledF0,OUTPUT);
 	Serial.begin(9600);
 }
-//
-char readChar(){
-	return Serial.read();
-} //DEPRECATED
-//CHAR TO INTEGER
-void toInt(char value){ //DEPRECATED
-	return atoi(value);
-}
 //HEX TO DEC
 int hexToDec(char value){
 	int ans;
-	if(isHexadecimalDigit(value)){
+	if(isAlpha(value)){
 		ans = (int)value - 55;
 	}
 	else{
@@ -52,46 +46,19 @@ int hexToDec(char value){
 	}
 	return ans;
 }
-//DEC TO BIN
-void decToBin(int value){
-	String temp = String(value,BIN);
-  bin.setCharAt(0) = temp.charAt(temp.length() - 3);
-  bin.setCharAt(1) = temp.charAt(temp.length() - 2);
-  bin.setCharAt(2) = temp.charAt(temp.length() - 1);
-  bin.setCharAt(3) = temp.charAt(temp.length());
+//DISPLAY
+void display(int value){
+  int temp = value;
+  if(value < 0){
+      temp = value + 16;
+  }
+  (temp >= 8) && ((temp -= 8) >= 0)? digitalWrite(ledF0, HIGH) : digitalWrite(ledF0, LOW);
+  (temp >= 4) && ((temp -= 4) >= 0)? digitalWrite(ledF1, HIGH) : digitalWrite(ledF1, LOW);
+  (temp >= 2) && ((temp -= 2) >= 0)? digitalWrite(ledF2, HIGH) : digitalWrite(ledF2, LOW);
+  (temp >= 1) && ((temp -= 1) >= 0)? digitalWrite(ledF3, HIGH) : digitalWrite(ledF3, LOW);
 }
-//DISMEMBER VALUE
-void dismember(int value){ //DEPRECATED
-	int temp = value;
-	d3 = temp/1000;
-	d2 = (temp/100)%10;
-	d1 = ((temp/10)%100)%10;
-	d0 = (((temp%1000)%100)%10);
-}
-//DISPLAY LEDS
-void display(int value){ //DEPRECATED
-	int temp = value;
-	digitalWrite(ledF3, temp/1000);
-	digitalWrite(ledF2, (temp/100)%10);
-	digitalWrite(ledF1, ((temp/10)%100)%10);
-	digitalWrite(ledF0,(((temp%1000)%100)%10));
-}
-void display(String value){
-	digitalWrite(ledF3, value.charAt(0));
-	digitalWrite(ledF2, value.charAt(1));
-	digitalWrite(ledF1, value.charAt(2));
-	digitalWrite(ledF0, value.charAt(3));
-}
-/*FUNCTION TABLE L = LOW H = HIGH
-LLLL = A'		HLLL = or(A',B)
-LLLH = nor(A,B)		HLLH = xnor(A,B)
-LLHL = and(A',B)	HLHL = B
-LLHH = Logical(0)	HLHH = and(A,B)
-LHLL = and(A',B')	HHLL = Logical(1)
-LHLH = B'		HHLH = or(A,B')
-LHHL = xor(A,B)		HHHL = or(A,B)
-LHHH = and(A,B')	HHHH = A
-*/
+/* FUNCTION TABLE (@see REFERENCES)
+ */
 int mux(){
 	int ans;
 	switch(S){
@@ -102,13 +69,13 @@ int mux(){
 			ans = NOR(A,B);
 			break;
 		case '2': //OK
-			ans = AND(A,B);
+			ans = AND(NOT(A),B);
 			break;
 		case '3': //OK
 			ans = logical_0;
 			break;
 		case '4': //OK
-			ans = AND(NOT(A),NOT(B));
+			ans = NAND(A,B);
 			break;
 		case '5': //OK
 			ans = NOT(B);
@@ -117,7 +84,7 @@ int mux(){
 			ans = XOR(A,B);
 			break;
 		case '7': //OK
-			ans = AND(A,B);
+			ans = AND(A,NOT(B));
 			break;
 		case '8': //OK
 			ans = OR(NOT(A),B);
@@ -145,40 +112,30 @@ int mux(){
 			break;
 	}
 	return ans;
-}
-//END MUX
-/*LOGICAL CHART & MNEMONIC
-A' = An			or(A',B) = AnoB
-nor(A,B) = nAoB		xnor(A,B)' = nAxB
-and(A',B) = AnB		B = B
-Logical(0) = zeroL	and(A,B) = AB
-and(A',B') = nAeB	Logical(1) = umL
-B' = Bn			or(A,B') = AoBn
-xor(A,B) = AxB		or(A,B) = AoB
-and(A,B') = ABn		A = A
-*/
-int NOT(int value){ //OK
+}//END MUX
+/* LOGICAL GATES (@see REFERENCES)
+ */
+int NOT(int value){
 	return (~value); //b = ~a;
 }
 int AND(int value1,int value2){
-  return (value1 & value2); //c = a & b;
+  return (value1&value2); //c = a & b;
 }
 int OR(int value1,int value2){
-  return (value1 | value2); //c = a | b;
+  return (value1|value2); //c = a | b;
 }
 int NAND(int value1,int value2){
-	return not(value1 & value2); //d = a ~& b;
+	return ~(value1 & value2); //d = a ~& b;
 }
 int NOR(int value1,int value2){
-  return not(value1 | value2); //d = a ~| b;
+  return ~(value1 | value2); //d = a ~| b;
 }
 int XOR(int value1,int value2){
 	return (value1 ^ value2); //c = a ^ b;
 }
 int XNOR(int value1,int value2){
-	return not(value1 ^ value2); //c = a ~^ b;
-}
-//END LOGICAL
+	return ~(value1 ^ value2); //c = a ~^ b;
+}//END LOGICAL GATES
 void loop() {
 	//CODE:
 	/*
@@ -193,29 +150,14 @@ void loop() {
 		delay(1000);
 	}
 	*/
-
 	//TEST
-	A = hexToDec('A');
-  B = hexToDec('B');
-  S = '6';
+	A = hexToDec('1');
+  B = hexToDec('A');
+  S = '0';
 	int test = mux();
-  decToBin(test);
+  Serial.println(test);
+  display(test);
   delay(500);
-	Serial.println("OI :"+bin);
-  display(bin);
 	//ENDTEST
-
-  /* NOTE: toBin - fix String bin = '0000' 4bits
-     Logic test{
-     NOT(A);
-     AND(A,B);
-     OR(A,B);
-     NAND(A,B);
-     NOR(A,B);
-     XOR(A,B);
-     XNOR(A,B);
-     }
-   */
-
    	Serial.flush();
 }

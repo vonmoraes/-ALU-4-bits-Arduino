@@ -1,0 +1,18 @@
+
+HEX       FUNCTION             LOGICAL CHART      MNEMONIC
+0         NOT(a)               A'                 An
+1         NOR(a,b)             nor(A,B)           nAoB
+2         AND(NOT(a),b)        and(A',B)          AnB
+3         logical_0            Logical(0)         zeroL
+4         NAND(a,b)            and(A',B')         nAeB
+5         NOT(b)               B'                 Bn
+6         XNOR(a,b)            xor(A,B)           AxB
+7         AND(a,NOT(b))        and(A,B')          ABn
+8         OR(NOT(a),b)         or(A',B)           AnoB
+9         NOT(XNOR(a,b))       xnor(A,B)'         nAxB
+A         B                    B                  B
+B         AND(a,b)             and(A,B)           AB
+C         logical_1            Logical(1)         umL
+D         OR(a,NOT(b))         or(A,B')           AoBn
+E         OR(a,b)              or(A,B)            AoB
+F         a                    A                  A
