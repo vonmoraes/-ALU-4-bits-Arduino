@@ -60,7 +60,7 @@ void display(int value){
 /* FUNCTION TABLE (@see REFERENCES)
  */
 int mux(){
-	int ans;
+	unsigned int ans;
 	switch(S){
 		case '0': //OK
 			ans = NOT(A);
